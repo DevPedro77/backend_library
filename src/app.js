@@ -1,6 +1,7 @@
 import express from "express";
 import conectarDb from "./config/dbConnect.js";
-import livro from "..//src/models/Livro.js";
+import routes from "./routes/index.js";
+import "dotenv/config";
 
 const conexao = await conectarDb();
 
@@ -13,37 +14,13 @@ conexao.once("open", ()=>{
 })
 
 const app = express();
-// meu app vai usar json como req padrao
-app.use(express.json())
-
-
-app.get("/", (req, res)=>{
-  res.status(200).send("Rota principal do app");
-});
-
-// Listando nosso objeto de livros
-app.get("/livros", async (req, res) => {
-  try {
-    const listaLivro = await livro.find({});
-    console.log(listaLivro);
-    res.status(200).json(listaLivro);
-  } catch (error) {
-    console.error("Erro ao buscar livros:", error);
-    res.status(500).json({ message: "Erro ao buscar livros" });
-  }
-});
-
+routes(app);
 // Listando um livro por id
 app.get("/livros/:id", (req, res) =>{
   const index = buscaLivro(req.params.id);
   res.status(200).json(livros[index])
 })
 
-// Cadastrando um livro no array
-app.post("/livros", (req, res)=>{
-  livros.push(req.body);
-  res.status(201).json(livros);
-})
 
 // atualizar um livro
 app.put("/livros/:id", (req, res)=>{
