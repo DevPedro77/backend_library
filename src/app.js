@@ -15,28 +15,6 @@ conexao.once("open", ()=>{
 
 const app = express();
 routes(app);
-// Listando um livro por id
-app.get("/livros/:id", (req, res) =>{
-  const index = buscaLivro(req.params.id);
-  res.status(200).json(livros[index])
-})
-
-
-// atualizar um livro
-app.put("/livros/:id", (req, res)=>{
-  const index = buscaLivro(req.params.id);
-  livros[index].nome = req.body.nome;
-  res.status(200).json(livros)
-})
-
-// Deletar um livro da api
-app.delete("/livros/:id", (req, res)=>{
-  const index = buscaLivro(req.params.id);
-  livros.splice(index, 1);
-  res.status(200).json(livros);
-})
-
-
 
 app.listen(5000);
 export default app;
